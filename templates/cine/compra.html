@@ -1,0 +1,52 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="my-0">&nbsp;</div>
+            <div class="card mb-4">
+                <img class="card-img-top" src="{{ object.image.url }}" alt="{{ object.title }}">
+                <div class="card-body">
+                    <h2 class="card-title">{{ object.title }}</h2>
+                    <p class="card-text">
+                        {{ object.resumen }}
+                    </p>
+                </div>
+                <div class="card-footer text-muted">
+                    Publicado {{ object.published_date }} |
+                    <a>
+                            {{ object.user.username }} - {{ object.genero.name }}
+                        </a>
+                </div>
+            </div>
+
+            <hr> {% if user.is_authenticated %}
+            <div class="card my-4">
+                <h5 class="card-header">Deja tu comentario</h5>
+                <div class="card-body">
+                    <form action="{% url 'blog:post_detail' object.category.name object.slug %}" method="POST">
+                        <div class="form-group">
+                            {% csrf_token %}
+                            <textarea class="form-control" rows="3" name="comment"></textarea>
+                            <input type="hidden" name="id" value="{{ object.id }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %} {% for comment in comments %}
+            <!-- <div class="media mb-4">
+                <img class="d-flex mr-3 rounded-circle" src="http://via.placeholder.com/50">
+                <div class="media-body">
+                    <h5 class="mt-0">{{ comment.user.username }}</h5>
+                    {{ comment.content }}
+                </div>
+            </div> -->
+            {% empty %}
+            <div class="media mb-4">
+                <h5>No hay comentarios !</h5>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

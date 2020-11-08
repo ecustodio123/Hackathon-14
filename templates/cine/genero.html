@@ -1,0 +1,40 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="my-0">&nbsp;</div>
+            {% for pelicula in peliculas %}
+            <div class="card mb-4">
+                <!-- <img class="card-img-top" src="{{ cartelera.pelicula.image.url }}" alt="{{cartelera.pelicula }}"> -->
+                {{peliculas}}
+                <div class="card-body">
+                    <h5 class="card-title">{{ pelicula.title }}</h5>
+                    <p class="card-text">
+                        <!-- {{ cartelera.pelicula.resumen }} -->
+                    </p>
+                    <!-- <a href="#" class="btn btn-primary">Comprar Entradas!!</a> -->
+                </div>
+                <!-- <div class="card-footer text-muted">
+                    Horarios: {{ cartelera.horario }} |
+                    <a>
+                                {{ cartelera.pelicula.genero }} - Fecha de estreno: {{ cartelera.pelicula.release_date }}
+                            </a>
+                </div> -->
+            </div>
+            {% empty %}
+            <div class="card mb-4">
+                <img class="card-img-top" src="{% static 'static/images/empty.png' %}" alt="Empty">
+                <div class="card-body">
+                    <h2 class="card-title text-center mt-4">
+                        {{generos}} No hay Peliculas para ver :c
+                    </h2>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            {% include 'utils/generos.html' %} {% include 'utils/search.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

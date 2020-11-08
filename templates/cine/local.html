@@ -1,0 +1,117 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8" id="peliculas">
+            <div class="my-0">&nbsp;</div>
+            {% for cartelera in carteleras %}
+            <div class="alert alert-success d-none fixed-top text-center" style="margin-top: 56px;" id="alerta" role="alert">
+                Su entrada para <strong>{{cartelera.pelicula}}</strong> fue comprada exitosamente!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+            <div class="card mb-4">
+                <blockquote>
+                    <h5>{{ cartelera.pelicula }}</h5>
+                    <img class="card-img-top" src="{{ cartelera.pelicula.image.url }}" alt="{{ cartelera.pelicula }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ cartelera.pelicula }}</h5>
+                        <p class="card-text">
+                            {{ cartelera.pelicula.resumen }}
+                        </p>
+                        <!-- <div class="row">
+                            <div class="col-md-4">
+                                <form method="POST">
+                                    <div class="input-group">
+                                        {% csrf_token %}
+                                        <p class="mt-2">
+                                            # de Tickets
+                                        </p>
+                                        <select name="boletos" class="mx-2 w-25">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-8">
+                                <button id="boton-comprar" onClick='showMessage()' class="btn btn-primary w-100 " data-dismiss="alert ">Comprar Entradas!!</button>
+                                <button id="boton-comprar-disabled" class="d-none btn btn-danger disabled w-100 " data-dismiss="alert ">Usted ya compro :D!!</button>
+                            </div>
+                        </div> -->
+                        <br>
+                        <a class="Este-no" href="{% url 'cine:compra' cartelera.local cartelera.slug %}" style="text-decoration: none">
+                            Leer Más
+                        </a>
+                    </div>
+                    <div class="card-footer text-muted text-center ">
+                        Horarios: {{ cartelera.horario }}
+                        <p>
+                            {{ cartelera.pelicula.genero }} - Fecha de estreno: {{ cartelera.pelicula.release_date }}
+                        </p>
+                    </div>
+                </blockquote>
+            </div>
+            {% empty %}
+            <div class="card mb-4 ">
+                <img class="card-img-top " src="{% static 'static/images/empty.png' %} " alt="Empty ">
+                <div class="card-body ">
+                    <h2 class="card-title text-center mt-4 ">
+                        No hay Peliculas para ver :c
+                    </h2>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-4 ">
+            {% include 'utils/generos.html' %}
+            <div class="card my-4">
+                <div class="card-header">Buscar</div>
+                <div class="card-body">
+                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Busque alguna pelicula..">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block scripts %}
+<script type="text/javascript ">
+    function showMessage() {
+        $('#alerta').removeClass("d-none ")
+        $('#boton-comprar').addClass("d-none ")
+        $('#boton-comprar-disabled').removeClass("d-none ")
+    }
+</script>
+<script>
+    function myFunction() {
+        // Declare variables
+        var input, filter, peliculas, a, h5, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        peliculas = document.getElementById("peliculas");
+        a = peliculas.getElementsByTagName("blockquote");
+        console.log(peliculas);
+        console.log(a);
+        console.log(a.length);
+        console.log(filter);
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < a.length; i++) {
+            h5 = a[i].getElementsByTagName("h5")[0];
+            if (h5) {
+                txtValue = h5.textContent || h5.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    a[i].style.display = "block";
+                } else {
+                    a[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+
+{% endblock %}
